@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - OPENAI_API_KEY=${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}
+      - DEFAULT_MODEL=gpt-4
+      - VECTOR_DB_PATH=/app/data/chroma_db
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # We can add more services as needed (e.g., vector database, frontend)

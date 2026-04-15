@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Optional
 
 from app.services.code_generation_service import CodeGenerationService
@@ -12,11 +12,24 @@ class CodeGenerationRequest(BaseModel):
     context: Optional[str] = ""
     temperature: Optional[float] = 0.2
 
+    @field_validator("requirements")
+    def validate_requirements(cls, v):
+        if not v or not v.strip():
+            raise ValueError("Requirements cannot be empty")
+
+        # Reject purely numeric or meaningless input
+        if v.strip().isdigit():
+            raise ValueError("Requirements must contain meaningful text")
+
+        return v
+
 class CodeCompletionRequest(BaseModel):
     code_snippet: str
     language: str
     instructions: str
     temperature: Optional[float] = 0.2
+
+    
 
 class CodeResponse(BaseModel):
     code: str

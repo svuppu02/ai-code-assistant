@@ -8,7 +8,7 @@ services:
     volumes:
       - ./backend:/app
     environment:
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=YOUR_API_KEY
       - DEFAULT_MODEL=gpt-4
       - VECTOR_DB_PATH=/app/data/chroma_db
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
